@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tournaments",
+  "info": {
+    "singularName": "tournament",
+    "pluralName": "tournaments",
+    "displayName": "Tournament",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "PRE-EVENT",
+        "POOL-PLAY",
+        "PLAY-OFFS",
+        "FINISHED"
+      ]
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tournaments"
+    },
+    "bracketType": {
+      "type": "enumeration",
+      "enum": [
+        "singleElim"
+      ]
+    },
+    "numTiers": {
+      "type": "integer"
+    },
+    "coaches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::coach.coach"
+    },
+    "pools": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::pool.pool",
+      "mappedBy": "tournament"
+    },
+    "matches": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::match.match",
+      "mappedBy": "tournament"
+    },
+    "rankings": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::ranking.ranking",
+      "mappedBy": "tournament"
+    }
+  }
+}

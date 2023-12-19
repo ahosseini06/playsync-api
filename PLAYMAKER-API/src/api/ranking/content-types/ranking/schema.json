@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "rankings",
+  "info": {
+    "singularName": "ranking",
+    "pluralName": "rankings",
+    "displayName": "ranking"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "tournament": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tournament.tournament",
+      "inversedBy": "rankings"
+    },
+    "team": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::team.team",
+      "inversedBy": "rankings"
+    },
+    "initial_rank": {
+      "type": "integer"
+    },
+    "current_rank": {
+      "type": "integer"
+    },
+    "games_won": {
+      "type": "integer"
+    },
+    "games_lost": {
+      "type": "integer"
+    }
+  }
+}

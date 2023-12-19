@@ -587,7 +587,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -615,6 +614,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'plugin::users-permissions.user',
       'manyToOne',
       'plugin::users-permissions.role'
+    >;
+    tournaments: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::tournament.tournament'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -677,6 +681,303 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiCoachCoach extends Schema.CollectionType {
+  collectionName: 'coaches';
+  info: {
+    singularName: 'coach';
+    pluralName: 'coaches';
+    displayName: 'Coach';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    team: Attribute.Relation<'api::coach.coach', 'manyToOne', 'api::team.team'>;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::coach.coach',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::coach.coach',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiMatchMatch extends Schema.CollectionType {
+  collectionName: 'matches';
+  info: {
+    singularName: 'match';
+    pluralName: 'matches';
+    displayName: 'Match';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    number: Attribute.Integer;
+    type: Attribute.Integer;
+    team_1: Attribute.Relation<
+      'api::match.match',
+      'manyToOne',
+      'api::team.team'
+    >;
+    team_2: Attribute.Relation<
+      'api::match.match',
+      'manyToOne',
+      'api::team.team'
+    >;
+    status: Attribute.Enumeration<['scheduled', 'inProgress', 'finished']>;
+    score_1: Attribute.Integer;
+    score_2: Attribute.Integer;
+    tournament: Attribute.Relation<
+      'api::match.match',
+      'manyToOne',
+      'api::tournament.tournament'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::match.match',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::match.match',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPlayerPlayer extends Schema.CollectionType {
+  collectionName: 'players';
+  info: {
+    singularName: 'player';
+    pluralName: 'players';
+    displayName: 'Player';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    jerseyNumber: Attribute.Integer;
+    team: Attribute.Relation<
+      'api::player.player',
+      'manyToOne',
+      'api::team.team'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::player.player',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::player.player',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiPoolPool extends Schema.CollectionType {
+  collectionName: 'pools';
+  info: {
+    singularName: 'pool';
+    pluralName: 'pools';
+    displayName: 'Pool';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    matches: Attribute.Relation<
+      'api::pool.pool',
+      'oneToMany',
+      'api::match.match'
+    >;
+    teams: Attribute.Relation<'api::pool.pool', 'oneToMany', 'api::team.team'>;
+    tournament: Attribute.Relation<
+      'api::pool.pool',
+      'manyToOne',
+      'api::tournament.tournament'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::pool.pool', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::pool.pool', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiRankingRanking extends Schema.CollectionType {
+  collectionName: 'rankings';
+  info: {
+    singularName: 'ranking';
+    pluralName: 'rankings';
+    displayName: 'ranking';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    tournament: Attribute.Relation<
+      'api::ranking.ranking',
+      'manyToOne',
+      'api::tournament.tournament'
+    >;
+    team: Attribute.Relation<
+      'api::ranking.ranking',
+      'manyToOne',
+      'api::team.team'
+    >;
+    initial_rank: Attribute.Integer;
+    current_rank: Attribute.Integer;
+    games_won: Attribute.Integer;
+    games_lost: Attribute.Integer;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::ranking.ranking',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::ranking.ranking',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTeamTeam extends Schema.CollectionType {
+  collectionName: 'teams';
+  info: {
+    singularName: 'team';
+    pluralName: 'teams';
+    displayName: 'Team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    players: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'api::player.player'
+    >;
+    coaches: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'api::coach.coach'
+    >;
+    matches: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'api::match.match'
+    >;
+    rankings: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'api::ranking.ranking'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<'api::team.team', 'oneToOne', 'admin::user'> &
+      Attribute.Private;
+  };
+}
+
+export interface ApiTournamentTournament extends Schema.CollectionType {
+  collectionName: 'tournaments';
+  info: {
+    singularName: 'tournament';
+    pluralName: 'tournaments';
+    displayName: 'Tournament';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    name: Attribute.String;
+    status: Attribute.Enumeration<
+      ['PRE-EVENT', 'POOL-PLAY', 'PLAY-OFFS', 'FINISHED']
+    >;
+    user: Attribute.Relation<
+      'api::tournament.tournament',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    bracketType: Attribute.Enumeration<['singleElim']>;
+    numTiers: Attribute.Integer;
+    coaches: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::coach.coach'
+    >;
+    pools: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::pool.pool'
+    >;
+    matches: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::match.match'
+    >;
+    rankings: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::ranking.ranking'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 declare module '@strapi/types' {
   export module Shared {
     export interface ContentTypes {
@@ -693,6 +994,13 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::coach.coach': ApiCoachCoach;
+      'api::match.match': ApiMatchMatch;
+      'api::player.player': ApiPlayerPlayer;
+      'api::pool.pool': ApiPoolPool;
+      'api::ranking.ranking': ApiRankingRanking;
+      'api::team.team': ApiTeamTeam;
+      'api::tournament.tournament': ApiTournamentTournament;
     }
   }
 }
