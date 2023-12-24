@@ -39,11 +39,6 @@
     "numTiers": {
       "type": "integer"
     },
-    "coaches": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::coach.coach"
-    },
     "pools": {
       "type": "relation",
       "relation": "oneToMany",

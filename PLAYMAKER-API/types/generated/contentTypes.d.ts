@@ -940,11 +940,6 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
     >;
     bracketType: Attribute.Enumeration<['singleElim']>;
     numTiers: Attribute.Integer;
-    coaches: Attribute.Relation<
-      'api::tournament.tournament',
-      'oneToMany',
-      'api::coach.coach'
-    >;
     pools: Attribute.Relation<
       'api::tournament.tournament',
       'oneToMany',
