@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "courts",
+  "info": {
+    "singularName": "court",
+    "pluralName": "courts",
+    "displayName": "court"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "number": {
+      "type": "integer"
+    },
+    "venue": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::venue.venue",
+      "inversedBy": "courts"
+    }
+  }
+}

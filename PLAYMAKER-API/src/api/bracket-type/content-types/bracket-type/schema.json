@@ -1,0 +1,19 @@
+{
+  "kind": "collectionType",
+  "collectionName": "bracket_types",
+  "info": {
+    "singularName": "bracket-type",
+    "pluralName": "bracket-types",
+    "displayName": "Bracket Type",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "type": {
+      "type": "string"
+    }
+  }
+}

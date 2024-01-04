@@ -30,12 +30,6 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "tournaments"
     },
-    "bracketType": {
-      "type": "enumeration",
-      "enum": [
-        "singleElim"
-      ]
-    },
     "numTiers": {
       "type": "integer"
     },
@@ -56,6 +50,26 @@
       "relation": "oneToMany",
       "target": "api::ranking.ranking",
       "mappedBy": "tournament"
+    },
+    "venues": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::venue.venue",
+      "mappedBy": "tournament"
+    },
+    "dates": {
+      "type": "json"
+    },
+    "bracket_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::bracket-type.bracket-type"
+    },
+    "poolPlay": {
+      "type": "boolean"
+    },
+    "crossOver": {
+      "type": "boolean"
     }
   }
 }

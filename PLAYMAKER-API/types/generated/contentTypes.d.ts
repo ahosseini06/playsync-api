@@ -681,6 +681,37 @@ export interface PluginI18NLocale extends Schema.CollectionType {
   };
 }
 
+export interface ApiBracketTypeBracketType extends Schema.CollectionType {
+  collectionName: 'bracket_types';
+  info: {
+    singularName: 'bracket-type';
+    pluralName: 'bracket-types';
+    displayName: 'Bracket Type';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    type: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::bracket-type.bracket-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::bracket-type.bracket-type',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCoachCoach extends Schema.CollectionType {
   collectionName: 'coaches';
   info: {
@@ -705,6 +736,41 @@ export interface ApiCoachCoach extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::coach.coach',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiCourtCourt extends Schema.CollectionType {
+  collectionName: 'courts';
+  info: {
+    singularName: 'court';
+    pluralName: 'courts';
+    displayName: 'court';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    number: Attribute.Integer;
+    venue: Attribute.Relation<
+      'api::court.court',
+      'manyToOne',
+      'api::venue.venue'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::court.court',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::court.court',
       'oneToOne',
       'admin::user'
     > &
@@ -938,7 +1004,6 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    bracketType: Attribute.Enumeration<['singleElim']>;
     numTiers: Attribute.Integer;
     pools: Attribute.Relation<
       'api::tournament.tournament',
@@ -955,6 +1020,19 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToMany',
       'api::ranking.ranking'
     >;
+    venues: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::venue.venue'
+    >;
+    dates: Attribute.JSON;
+    bracket_type: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToOne',
+      'api::bracket-type.bracket-type'
+    >;
+    poolPlay: Attribute.Boolean;
+    crossOver: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -966,6 +1044,49 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       Attribute.Private;
     updatedBy: Attribute.Relation<
       'api::tournament.tournament',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
+export interface ApiVenueVenue extends Schema.CollectionType {
+  collectionName: 'venues';
+  info: {
+    singularName: 'venue';
+    pluralName: 'venues';
+    displayName: 'Venue';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Attribute.String;
+    name: Attribute.String;
+    tournament: Attribute.Relation<
+      'api::venue.venue',
+      'manyToOne',
+      'api::tournament.tournament'
+    >;
+    courts: Attribute.Relation<
+      'api::venue.venue',
+      'oneToMany',
+      'api::court.court'
+    >;
+    place_id: Attribute.BigInteger;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::venue.venue',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::venue.venue',
       'oneToOne',
       'admin::user'
     > &
@@ -989,13 +1110,16 @@ declare module '@strapi/types' {
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'plugin::i18n.locale': PluginI18NLocale;
+      'api::bracket-type.bracket-type': ApiBracketTypeBracketType;
       'api::coach.coach': ApiCoachCoach;
+      'api::court.court': ApiCourtCourt;
       'api::match.match': ApiMatchMatch;
       'api::player.player': ApiPlayerPlayer;
       'api::pool.pool': ApiPoolPool;
       'api::ranking.ranking': ApiRankingRanking;
       'api::team.team': ApiTeamTeam;
       'api::tournament.tournament': ApiTournamentTournament;
+      'api::venue.venue': ApiVenueVenue;
     }
   }
 }

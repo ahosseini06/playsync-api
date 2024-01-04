@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "venues",
+  "info": {
+    "singularName": "venue",
+    "pluralName": "venues",
+    "displayName": "Venue",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "address": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "tournament": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tournament.tournament",
+      "inversedBy": "venues"
+    },
+    "courts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::court.court",
+      "mappedBy": "venue"
+    },
+    "place_id": {
+      "type": "biginteger"
+    }
+  }
+}
