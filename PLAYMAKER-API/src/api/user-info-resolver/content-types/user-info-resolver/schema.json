@@ -1,0 +1,18 @@
+{
+  "kind": "singleType",
+  "collectionName": "user_info_resolvers",
+  "info": {
+    "singularName": "user-info-resolver",
+    "pluralName": "user-info-resolvers",
+    "displayName": "userInfoResolver"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "resolver": {
+      "type": "string"
+    }
+  }
+}

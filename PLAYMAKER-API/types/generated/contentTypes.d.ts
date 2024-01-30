@@ -664,6 +664,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::tournament.tournament'
     >;
+    Name: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -1051,6 +1052,36 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
   };
 }
 
+export interface ApiUserInfoResolverUserInfoResolver extends Schema.SingleType {
+  collectionName: 'user_info_resolvers';
+  info: {
+    singularName: 'user-info-resolver';
+    pluralName: 'user-info-resolvers';
+    displayName: 'userInfoResolver';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    resolver: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::user-info-resolver.user-info-resolver',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::user-info-resolver.user-info-resolver',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiVenueVenue extends Schema.CollectionType {
   collectionName: 'venues';
   info: {
@@ -1119,6 +1150,7 @@ declare module '@strapi/types' {
       'api::ranking.ranking': ApiRankingRanking;
       'api::team.team': ApiTeamTeam;
       'api::tournament.tournament': ApiTournamentTournament;
+      'api::user-info-resolver.user-info-resolver': ApiUserInfoResolverUserInfoResolver;
       'api::venue.venue': ApiVenueVenue;
     }
   }
