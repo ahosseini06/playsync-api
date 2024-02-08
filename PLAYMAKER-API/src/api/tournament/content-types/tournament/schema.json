@@ -18,11 +18,11 @@
     "status": {
       "type": "enumeration",
       "enum": [
-        "PRE-EVENT",
-        "POOL-PLAY",
-        "PLAY-OFFS",
-        "FINISHED"
-      ]
+        "scheduled",
+        "active",
+        "complete"
+      ],
+      "default": "scheduled"
     },
     "user": {
       "type": "relation",
@@ -70,6 +70,18 @@
     },
     "crossOver": {
       "type": "boolean"
+    },
+    "stage": {
+      "type": "enumeration",
+      "enum": [
+        "registering",
+        "configuration",
+        "check-in",
+        "pool-play",
+        "play-offs",
+        "complete"
+      ],
+      "default": "registering"
     }
   }
 }

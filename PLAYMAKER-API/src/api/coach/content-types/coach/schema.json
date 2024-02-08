@@ -19,6 +19,12 @@
       "relation": "manyToOne",
       "target": "api::team.team",
       "inversedBy": "coaches"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "coach"
     }
   }
 }

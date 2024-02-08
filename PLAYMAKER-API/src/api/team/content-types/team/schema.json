@@ -14,12 +14,6 @@
     "name": {
       "type": "string"
     },
-    "players": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::player.player",
-      "mappedBy": "team"
-    },
     "coaches": {
       "type": "relation",
       "relation": "oneToMany",
@@ -37,6 +31,12 @@
       "relation": "oneToMany",
       "target": "api::ranking.ranking",
       "mappedBy": "team"
+    },
+    "players": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::player.player",
+      "mappedBy": "teams"
     }
   }
 }

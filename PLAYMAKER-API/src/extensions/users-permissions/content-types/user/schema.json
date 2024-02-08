@@ -73,6 +73,25 @@
     },
     "Name": {
       "type": "string"
+    },
+    "Type": {
+      "type": "enumeration",
+      "enum": [
+        "Admin",
+        "Player",
+        "Coach"
+      ]
+    },
+    "coach": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::coach.coach",
+      "inversedBy": "user"
+    },
+    "player": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::player.player"
     }
   }
 }

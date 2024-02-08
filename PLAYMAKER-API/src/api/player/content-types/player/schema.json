@@ -4,7 +4,8 @@
   "info": {
     "singularName": "player",
     "pluralName": "players",
-    "displayName": "Player"
+    "displayName": "Player",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,9 +18,9 @@
     "jerseyNumber": {
       "type": "integer"
     },
-    "team": {
+    "teams": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::team.team",
       "inversedBy": "players"
     }

@@ -2,7 +2,7 @@ module.exports = {
     routes: [
         {
             method: 'GET',
-            path: '/is-username-available',
+            path: '/is-username-available/:username',
             handler: 'user-info-resolver.isUsernameAvailable',
             config: {
                 auth: false,
@@ -10,7 +10,7 @@ module.exports = {
         },
         {
             method: 'GET',
-            path: '/is-email-available',
+            path: '/is-email-available/:email',
             handler: 'user-info-resolver.isEmailAvailable',
             config: {
                 auth: false,

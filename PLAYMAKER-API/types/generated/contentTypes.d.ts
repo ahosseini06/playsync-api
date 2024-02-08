@@ -665,6 +665,17 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::tournament.tournament'
     >;
     Name: Attribute.String;
+    Type: Attribute.Enumeration<['Admin', 'Player', 'Coach']>;
+    coach: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::coach.coach'
+    >;
+    player: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::player.player'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -726,6 +737,11 @@ export interface ApiCoachCoach extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     team: Attribute.Relation<'api::coach.coach', 'manyToOne', 'api::team.team'>;
+    user: Attribute.Relation<
+      'api::coach.coach',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -835,6 +851,7 @@ export interface ApiPlayerPlayer extends Schema.CollectionType {
     singularName: 'player';
     pluralName: 'players';
     displayName: 'Player';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -842,9 +859,9 @@ export interface ApiPlayerPlayer extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     jerseyNumber: Attribute.Integer;
-    team: Attribute.Relation<
+    teams: Attribute.Relation<
       'api::player.player',
-      'manyToOne',
+      'manyToMany',
       'api::team.team'
     >;
     createdAt: Attribute.DateTime;
@@ -954,11 +971,6 @@ export interface ApiTeamTeam extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String;
-    players: Attribute.Relation<
-      'api::team.team',
-      'oneToMany',
-      'api::player.player'
-    >;
     coaches: Attribute.Relation<
       'api::team.team',
       'oneToMany',
@@ -973,6 +985,11 @@ export interface ApiTeamTeam extends Schema.CollectionType {
       'api::team.team',
       'oneToMany',
       'api::ranking.ranking'
+    >;
+    players: Attribute.Relation<
+      'api::team.team',
+      'manyToMany',
+      'api::player.player'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -997,9 +1014,8 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String;
-    status: Attribute.Enumeration<
-      ['PRE-EVENT', 'POOL-PLAY', 'PLAY-OFFS', 'FINISHED']
-    >;
+    status: Attribute.Enumeration<['scheduled', 'active', 'complete']> &
+      Attribute.DefaultTo<'scheduled'>;
     user: Attribute.Relation<
       'api::tournament.tournament',
       'manyToOne',
@@ -1034,6 +1050,17 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
     >;
     poolPlay: Attribute.Boolean;
     crossOver: Attribute.Boolean;
+    stage: Attribute.Enumeration<
+      [
+        'registering',
+        'configuration',
+        'check-in',
+        'pool-play',
+        'play-offs',
+        'complete'
+      ]
+    > &
+      Attribute.DefaultTo<'registering'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
