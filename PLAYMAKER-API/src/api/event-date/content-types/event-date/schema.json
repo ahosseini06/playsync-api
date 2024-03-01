@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "event_dates",
+  "info": {
+    "singularName": "event-date",
+    "pluralName": "event-dates",
+    "displayName": "EventDate"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "datetime": {
+      "type": "datetime"
+    },
+    "tournament": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::tournament.tournament",
+      "inversedBy": "event_dates"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "SIGNUP_OPEN",
+        "SIGNUP_CLOSE",
+        "PLAY"
+      ]
+    },
+    "require_check": {
+      "type": "boolean"
+    }
+  }
+}

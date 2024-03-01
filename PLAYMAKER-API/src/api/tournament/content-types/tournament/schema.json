@@ -82,6 +82,12 @@
         "complete"
       ],
       "default": "registering"
+    },
+    "event_dates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-date.event-date",
+      "mappedBy": "tournament"
     }
   }
 }

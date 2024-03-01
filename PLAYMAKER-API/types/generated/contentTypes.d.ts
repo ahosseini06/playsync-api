@@ -795,6 +795,43 @@ export interface ApiCourtCourt extends Schema.CollectionType {
   };
 }
 
+export interface ApiEventDateEventDate extends Schema.CollectionType {
+  collectionName: 'event_dates';
+  info: {
+    singularName: 'event-date';
+    pluralName: 'event-dates';
+    displayName: 'EventDate';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    datetime: Attribute.DateTime;
+    tournament: Attribute.Relation<
+      'api::event-date.event-date',
+      'manyToOne',
+      'api::tournament.tournament'
+    >;
+    type: Attribute.Enumeration<['SIGNUP_OPEN', 'SIGNUP_CLOSE', 'PLAY']>;
+    require_check: Attribute.Boolean;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::event-date.event-date',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::event-date.event-date',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiMatchMatch extends Schema.CollectionType {
   collectionName: 'matches';
   info: {
@@ -1061,6 +1098,11 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       ]
     > &
       Attribute.DefaultTo<'registering'>;
+    event_dates: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::event-date.event-date'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1171,6 +1213,7 @@ declare module '@strapi/types' {
       'api::bracket-type.bracket-type': ApiBracketTypeBracketType;
       'api::coach.coach': ApiCoachCoach;
       'api::court.court': ApiCourtCourt;
+      'api::event-date.event-date': ApiEventDateEventDate;
       'api::match.match': ApiMatchMatch;
       'api::player.player': ApiPlayerPlayer;
       'api::pool.pool': ApiPoolPool;
