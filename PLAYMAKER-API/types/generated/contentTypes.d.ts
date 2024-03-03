@@ -1079,7 +1079,6 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToMany',
       'api::venue.venue'
     >;
-    dates: Attribute.JSON;
     bracket_type: Attribute.Relation<
       'api::tournament.tournament',
       'oneToOne',

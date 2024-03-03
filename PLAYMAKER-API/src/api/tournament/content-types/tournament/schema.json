@@ -57,9 +57,6 @@
       "target": "api::venue.venue",
       "mappedBy": "tournament"
     },
-    "dates": {
-      "type": "json"
-    },
     "bracket_type": {
       "type": "relation",
       "relation": "oneToOne",
