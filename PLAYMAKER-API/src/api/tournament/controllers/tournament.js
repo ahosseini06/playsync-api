@@ -32,10 +32,10 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
   },
 
   async create(ctx) {
-    const dates = await Promise.all(ctx.request.body.data.dates.map(async (d) => {
+    const dates = await Promise.all(ctx.request.body.data.dates.map(async (date) => {
       const eventDate = await strapi.entityService.create('api::event-date.event-date', {
         data: {
-          datetime: d,
+          ...date,
           publishedAt: new Date(),
         }
       });

@@ -801,6 +801,7 @@ export interface ApiEventDateEventDate extends Schema.CollectionType {
     singularName: 'event-date';
     pluralName: 'event-dates';
     displayName: 'EventDate';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -812,8 +813,11 @@ export interface ApiEventDateEventDate extends Schema.CollectionType {
       'manyToOne',
       'api::tournament.tournament'
     >;
-    type: Attribute.Enumeration<['SIGNUP_OPEN', 'SIGNUP_CLOSE', 'PLAY']>;
     require_check: Attribute.Boolean;
+    stage_action: Attribute.Enumeration<
+      ['configuration', 'check-in', 'pool-play', 'play-offs', 'complete']
+    >;
+    status_action: Attribute.Enumeration<['active', 'complete']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

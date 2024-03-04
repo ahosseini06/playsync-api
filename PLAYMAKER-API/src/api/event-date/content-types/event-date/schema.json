@@ -4,7 +4,8 @@
   "info": {
     "singularName": "event-date",
     "pluralName": "event-dates",
-    "displayName": "EventDate"
+    "displayName": "EventDate",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -20,16 +21,25 @@
       "target": "api::tournament.tournament",
       "inversedBy": "event_dates"
     },
-    "type": {
-      "type": "enumeration",
-      "enum": [
-        "SIGNUP_OPEN",
-        "SIGNUP_CLOSE",
-        "PLAY"
-      ]
-    },
     "require_check": {
       "type": "boolean"
+    },
+    "stage_action": {
+      "type": "enumeration",
+      "enum": [
+        "configuration",
+        "check-in",
+        "pool-play",
+        "play-offs",
+        "complete"
+      ]
+    },
+    "status_action": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "complete"
+      ]
     }
   }
 }
