@@ -813,11 +813,12 @@ export interface ApiEventDateEventDate extends Schema.CollectionType {
       'manyToOne',
       'api::tournament.tournament'
     >;
-    require_check: Attribute.Boolean;
     stage_action: Attribute.Enumeration<
       ['configuration', 'check-in', 'pool-play', 'play-offs', 'complete']
     >;
     status_action: Attribute.Enumeration<['active', 'complete']>;
+    check_in_policy: Attribute.Enumeration<['none', 'report', 'delay']> &
+      Attribute.DefaultTo<'none'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1006,6 +1007,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
     singularName: 'team';
     pluralName: 'teams';
     displayName: 'Team';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -1032,6 +1034,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
       'manyToMany',
       'api::player.player'
     >;
+    checked_in: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

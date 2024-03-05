@@ -4,7 +4,8 @@
   "info": {
     "singularName": "team",
     "pluralName": "teams",
-    "displayName": "Team"
+    "displayName": "Team",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -37,6 +38,9 @@
       "relation": "manyToMany",
       "target": "api::player.player",
       "mappedBy": "teams"
+    },
+    "checked_in": {
+      "type": "boolean"
     }
   }
 }

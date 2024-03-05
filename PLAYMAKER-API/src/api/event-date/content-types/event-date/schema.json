@@ -21,9 +21,6 @@
       "target": "api::tournament.tournament",
       "inversedBy": "event_dates"
     },
-    "require_check": {
-      "type": "boolean"
-    },
     "stage_action": {
       "type": "enumeration",
       "enum": [
@@ -40,6 +37,15 @@
         "active",
         "complete"
       ]
+    },
+    "check_in_policy": {
+      "type": "enumeration",
+      "enum": [
+        "none",
+        "report",
+        "delay"
+      ],
+      "default": "none"
     }
   }
 }
