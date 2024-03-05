@@ -13,10 +13,16 @@ module.exports = {
       }
     });
     dates.forEach((d) => {
+      const updates = {}
+      if (d.status_action) {
+        updates.status = d.status_action
+      }
+      if (d.stage_action) {
+        updates.stage = d.stage_action
+      }
       strapi.entityService.update('api::tournament.tournament', d.tournament.id, {
-        data: { status: 'active' }
+        data: updates
       });
-      console.log('Tournament ' + d.tournament.id + ' is now active');
     })
   }
 };
