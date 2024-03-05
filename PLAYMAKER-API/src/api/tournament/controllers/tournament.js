@@ -35,7 +35,8 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
     if (!ctx.request.body.data) {
       return ctx.badRequest('Data is required');
     }
-    const dates = await Promise.all(ctx.request.body.data.dates.map(async (date) => {
+    //date creation
+    const dates = ctx.request.body.data.dates ? await Promise.all(ctx.request.body.data.dates.map(async (date) => {
       const eventDate = await strapi.entityService.create('api::event-date.event-date', {
         data: {
           ...date,
@@ -43,11 +44,29 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
         }
       });
       return eventDate.id
-    }));
+    })) : [];
+    //private id creation
+    const privateID = Math.floor(1000000000 + Math.random() * 9000000000);
+    let matches = [0]
+    while (matches.length > 0){
+      matches = await strapi.entityService.findMany('api::tournament.tournament', {
+        filters: {
+          private_id: privateID.toString()
+        }
+      })
+    }
+    //public id creation
+    const publicID = await strapi.service('plugin::content-manager.uid').generateUIDField({
+      contentTypeUID: "api::tournament.tournament",
+      field: "public_id",
+      data: ctx.request.body.data
+    })
     const response = await super.create(ctx);
     await strapi.entityService.update('api::tournament.tournament', response.data.id, {
       data: {
-        event_dates: dates
+        event_dates: dates,
+        private_id: privateID.toString(),
+        public_id: publicID
       }
     });
     return response

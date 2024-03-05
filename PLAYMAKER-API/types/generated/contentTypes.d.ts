@@ -1109,6 +1109,8 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToMany',
       'api::event-date.event-date'
     >;
+    public_id: Attribute.UID<'api::tournament.tournament', 'name'>;
+    private_id: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

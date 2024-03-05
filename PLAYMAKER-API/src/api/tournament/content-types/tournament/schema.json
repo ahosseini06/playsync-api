@@ -85,6 +85,13 @@
       "relation": "oneToMany",
       "target": "api::event-date.event-date",
       "mappedBy": "tournament"
+    },
+    "public_id": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "private_id": {
+      "type": "string"
     }
   }
 }
