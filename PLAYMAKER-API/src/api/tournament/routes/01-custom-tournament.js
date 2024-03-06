@@ -18,7 +18,7 @@ module.exports = {
     },
     {
       "method": "GET",
-      "path": "/private-tournament/:id",
+      "path": "/linked-tournament/:id",
       "handler": "tournament.getPrivate",
       "config": {
         "policies": []
