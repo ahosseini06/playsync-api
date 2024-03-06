@@ -671,9 +671,9 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToOne',
       'api::coach.coach'
     >;
-    player: Attribute.Relation<
+    players: Attribute.Relation<
       'plugin::users-permissions.user',
-      'oneToOne',
+      'oneToMany',
       'api::player.player'
     >;
     createdAt: Attribute.DateTime;
@@ -905,6 +905,11 @@ export interface ApiPlayerPlayer extends Schema.CollectionType {
       'api::player.player',
       'manyToMany',
       'api::team.team'
+    >;
+    user: Attribute.Relation<
+      'api::player.player',
+      'manyToOne',
+      'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

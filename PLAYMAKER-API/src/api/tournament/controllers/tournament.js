@@ -11,24 +11,24 @@ const jwt = require('jwt-decode');
 module.exports = createCoreController('api::tournament.tournament', ({ strapi }) => ({
   async find(ctx) {
     const authorizationHeader = ctx.headers.authorization;
+
     if (!authorizationHeader) {
       return ctx.badRequest('Authorization header is required');
     }
+
     const [scheme, token] = authorizationHeader.split(' ');
     const decodedToken = jwt.jwtDecode(token);
-
     ctx.query = {
+      ...ctx.query,
       filters: {
         user: {
-          id: {
-            $eq: decodedToken.id
-          }
+          id: decodedToken.id
         }
       }
     }
 
     const { data, meta } = await super.find(ctx);
-    return { data, meta }
+    return { data, meta}
   },
 
   async getPublic(ctx){

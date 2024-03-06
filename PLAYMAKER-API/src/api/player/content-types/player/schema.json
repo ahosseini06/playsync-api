@@ -23,6 +23,12 @@
       "relation": "manyToMany",
       "target": "api::team.team",
       "inversedBy": "players"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "players"
     }
   }
 }

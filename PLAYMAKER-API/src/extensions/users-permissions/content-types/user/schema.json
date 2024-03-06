@@ -88,10 +88,11 @@
       "target": "api::coach.coach",
       "inversedBy": "user"
     },
-    "player": {
+    "players": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::player.player"
+      "relation": "oneToMany",
+      "target": "api::player.player",
+      "mappedBy": "user"
     }
   }
 }
