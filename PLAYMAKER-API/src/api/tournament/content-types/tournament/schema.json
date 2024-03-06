@@ -95,6 +95,11 @@
     },
     "pool_size": {
       "type": "integer"
+    },
+    "teams": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::team.team"
     }
   }
 }

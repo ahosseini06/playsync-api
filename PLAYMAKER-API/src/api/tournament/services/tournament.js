@@ -9,7 +9,47 @@ const { createCoreService } = require('@strapi/strapi').factories;
 module.exports = createCoreService('api::tournament.tournament', ({ strapi }) => ({
   async generatePools(tournament) {
     //get teams
-    const teams = tournament.teams;
+    const populatedTournament = await strapi.entityService.findOne('api::tournament.tournament', tournament.id, {
+      populate: {
+        teams: true
+      }
+    })
+    const teamRankings = await Promise.all(populatedTournament.teams.map(async t => {
+      const rankingObjs = await strapi.entityService.findMany('api::ranking.ranking', {
+        filters: {
+          team: t.id,
+          tournament: tournament.id
+        }
+      })
+      return {team: t.id, ranking: rankingObjs[0].current_rank}
+    }))
+    const sortedRankings = teamRankings.sort((a, b) => a.ranking - b.ranking).map(obj => obj.team)
+    const table = []
+    let currentRow = []
+    sortedRankings.forEach((team, i) => {
+      currentRow.push(team)
+      if(currentRow.length === Math.ceil(sortedRankings.length/tournament.pool_size)){
+        table.push(currentRow)
+        currentRow = []
+      }
+    })
+    if(currentRow.length > 0){
+      table.push(currentRow)
+    }
+    const pools = []
+    table[0].forEach((team, i) => {
+      pools.push(table.map(row => row[i]).filter(t => t))
+    })
+    pools.forEach(async (p, i) => {
+      await strapi.entityService.create('api::pool.pool', {
+        data: {
+          tournament: tournament.id,
+          name: `Pool ${i + 1}`,
+          teams: p,
+          publishedAt: new Date()
+        }
+      })
+    })
   },
 
   async manageCheckIn(d){

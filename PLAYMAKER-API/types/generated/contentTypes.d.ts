@@ -1117,6 +1117,11 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
     public_id: Attribute.UID<'api::tournament.tournament', 'name'>;
     private_id: Attribute.String;
     pool_size: Attribute.Integer;
+    teams: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::team.team'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
