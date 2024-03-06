@@ -31,6 +31,21 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
     return { data, meta }
   },
 
+  async getPublic(ctx){
+    const { id } = ctx.params;
+    const tournaments = await strapi.entityService.findMany("api::tournament.tournament", {
+      filters: {
+        public_id: id
+      },
+      populate: {
+        pools: true,
+        matches: true
+      }
+    });
+    const { name, pools, matches} = tournaments[0]
+    return { data: { name, pools, matches } }
+  },
+
   async create(ctx) {
     if (!ctx.request.body.data) {
       return ctx.badRequest('Data is required');
@@ -73,7 +88,7 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
   },
 
   async canRegister(ctx) {
-    const id = ctx.request.url.split("?id=");
+    const id = ctx.request.url.split("?id=")[1];
     const tournament = await strapi.entityService.findOne("api::tournament.tournament", id);
     return tournament.status === 'scheduled'
   }
