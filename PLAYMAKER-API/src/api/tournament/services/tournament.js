@@ -8,12 +8,17 @@ const { createCoreService } = require('@strapi/strapi').factories;
 
 module.exports = createCoreService('api::tournament.tournament', ({ strapi }) => ({
   async generatePools(tournament) {
-    //get teams
     const populatedTournament = await strapi.entityService.findOne('api::tournament.tournament', tournament.id, {
       populate: {
-        teams: true
+        teams: true,
+        pools: true
       }
     })
+    if (populatedTournament.pools && populatedTournament.pools.length > 0) {
+      populatedTournament.pools.forEach(async p => {
+        await strapi.entityService.delete('api::pool.pool', p.id)
+      })
+    }
     const teamRankings = await Promise.all(populatedTournament.teams.map(async t => {
       const rankingObjs = await strapi.entityService.findMany('api::ranking.ranking', {
         filters: {

@@ -110,6 +110,17 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
     return response
   },
 
+  async update(ctx) {
+    //check if teams are added
+    const response = await super.update(ctx)
+    const tournament = await strapi.entityService.findOne("api::tournament.tournament", response.data.id);
+    const newTeams = ctx.request.body.data.teams;
+    if (newTeams && newTeams.length > 0) {
+      await strapi.service('api::tournament.tournament').generatePools(tournament)
+    }
+    return tournament
+  },
+
   async canRegister(ctx) {
     const id = ctx.request.url.split("?id=")[1];
     const tournament = await strapi.entityService.findOne("api::tournament.tournament", id);
