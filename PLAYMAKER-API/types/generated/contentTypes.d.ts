@@ -900,7 +900,7 @@ export interface ApiPlayerPlayer extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String;
-    jerseyNumber: Attribute.Integer;
+    jersey_number: Attribute.Integer;
     teams: Attribute.Relation<
       'api::player.player',
       'manyToMany',
@@ -1065,7 +1065,7 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
-    numTiers: Attribute.Integer;
+    num_tiers: Attribute.Integer;
     pools: Attribute.Relation<
       'api::tournament.tournament',
       'oneToMany',
@@ -1091,8 +1091,8 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToOne',
       'api::bracket-type.bracket-type'
     >;
-    poolPlay: Attribute.Boolean;
-    crossOver: Attribute.Boolean;
+    pool_play: Attribute.Boolean;
+    cross_over: Attribute.Boolean;
     stage: Attribute.Enumeration<
       [
         'registering',

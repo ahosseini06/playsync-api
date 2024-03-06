@@ -30,7 +30,7 @@
       "target": "plugin::users-permissions.user",
       "inversedBy": "tournaments"
     },
-    "numTiers": {
+    "num_tiers": {
       "type": "integer"
     },
     "pools": {
@@ -62,10 +62,10 @@
       "relation": "oneToOne",
       "target": "api::bracket-type.bracket-type"
     },
-    "poolPlay": {
+    "pool_play": {
       "type": "boolean"
     },
-    "crossOver": {
+    "cross_over": {
       "type": "boolean"
     },
     "stage": {
