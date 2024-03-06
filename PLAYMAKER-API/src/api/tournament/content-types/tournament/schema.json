@@ -92,6 +92,9 @@
     },
     "private_id": {
       "type": "string"
+    },
+    "pool_size": {
+      "type": "integer"
     }
   }
 }
