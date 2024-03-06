@@ -90,6 +90,6 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
   async canRegister(ctx) {
     const id = ctx.request.url.split("?id=")[1];
     const tournament = await strapi.entityService.findOne("api::tournament.tournament", id);
-    return tournament.status === 'scheduled'
+    return tournament && tournament.status === 'scheduled'
   }
 }));
