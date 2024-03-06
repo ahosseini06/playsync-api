@@ -46,6 +46,20 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
     return { data: { name, pools, matches } }
   },
 
+  async getPrivate(ctx){
+    const { id } = ctx.params;
+    const tournaments = await strapi.entityService.findMany("api::tournament.tournament", {
+      filters: {
+        private_id: id
+      },
+      populate: {
+        pools: true,
+        matches: true
+      }
+    });
+    return { data: tournaments[0] }
+  },
+
   async create(ctx) {
     if (!ctx.request.body.data) {
       return ctx.badRequest('Data is required');

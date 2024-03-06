@@ -15,6 +15,14 @@ module.exports = {
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "GET",
+      "path": "/private-tournament/:id",
+      "handler": "tournament.getPrivate",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }
