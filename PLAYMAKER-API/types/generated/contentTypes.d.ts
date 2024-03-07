@@ -1104,6 +1104,7 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
         'registering',
         'configuration',
         'check-in',
+        'buffer',
         'pool-play',
         'play-offs',
         'complete'
