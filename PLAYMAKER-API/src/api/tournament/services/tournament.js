@@ -79,7 +79,8 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     if (d.check_in_policy !== "none") {
       const tournament = await strapi.entityService.findOne('api::tournament.tournament', d.tournament.id, {
         populate: {
-          teams: true
+          teams: true,
+          user: true
         }
       })
       const teams = tournament.teams
@@ -96,7 +97,16 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
           })
           return
         }*/
-        console.log("The following teams have not checked in: ", uncheckedTeams.map(p => p.name))
+        if (tournament.user) {
+          await strapi.entityService.create('api::notification.notification', {
+            data: {
+              target_user: tournament.user.id,
+              tournament: d.tournament.id,
+              message: `The following teams have not checked in: ${uncheckedTeams.map(p => p.name).join(", ")}`,
+              publishedAt: new Date()
+            }
+          })
+        }
       }
     }
   }

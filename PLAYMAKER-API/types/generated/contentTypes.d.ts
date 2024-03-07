@@ -888,6 +888,49 @@ export interface ApiMatchMatch extends Schema.CollectionType {
   };
 }
 
+export interface ApiNotificationNotification extends Schema.CollectionType {
+  collectionName: 'notifications';
+  info: {
+    singularName: 'notification';
+    pluralName: 'notifications';
+    displayName: 'Notification';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    message: Attribute.String;
+    action: Attribute.Enumeration<['none', 'start-tournament']> &
+      Attribute.DefaultTo<'none'>;
+    target_user: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    tournament: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'api::tournament.tournament'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiPlayerPlayer extends Schema.CollectionType {
   collectionName: 'players';
   info: {
@@ -1236,6 +1279,7 @@ declare module '@strapi/types' {
       'api::court.court': ApiCourtCourt;
       'api::event-date.event-date': ApiEventDateEventDate;
       'api::match.match': ApiMatchMatch;
+      'api::notification.notification': ApiNotificationNotification;
       'api::player.player': ApiPlayerPlayer;
       'api::pool.pool': ApiPoolPool;
       'api::ranking.ranking': ApiRankingRanking;
