@@ -125,5 +125,24 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
     const id = ctx.request.url.split("?id=")[1];
     const tournament = await strapi.entityService.findOne("api::tournament.tournament", id);
     return tournament && tournament.status === 'scheduled'
+  },
+
+  async startPlay(ctx) {
+    const id = ctx.request.url.split("?id=")[1];
+    const tournament = await strapi.entityService.findOne("api::tournament.tournament", id);
+    const notifications = await strapi.entityService.findMany("api::notification.notification", {
+      filters: {
+        tournament: id,
+        action: 'start-tournament'
+      }
+    });
+    if (notifications.length > 0) {
+      await strapi.entityService.update("api::tournament.tournament", id, {
+        data: {
+          stage: 'pool-play'
+        }
+      })
+    }
+    return tournament
   }
 }));

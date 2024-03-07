@@ -23,6 +23,14 @@ module.exports = {
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/start-play",
+      "handler": "tournament.startPlay",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }

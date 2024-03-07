@@ -21,8 +21,13 @@ module.exports = {
       }
       if (d.stage_action) {
         updates.stage = d.stage_action
-        if(d.stage_action === "configuration"){
-          await strapi.service('api::tournament.tournament').generatePools(d.tournament)
+        switch (updates.stage) {
+          case "configuration":
+            await strapi.service('api::tournament.tournament').generatePools(d.tournament)
+            break;
+          case "pool-play":
+            await strapi.service('api::notification.notification').sendStartConfirmation(d.tournament.id)
+            return
         }
       }
       strapi.entityService.update('api::tournament.tournament', d.tournament.id, {
