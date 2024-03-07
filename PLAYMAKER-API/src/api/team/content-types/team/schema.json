@@ -40,7 +40,8 @@
       "mappedBy": "teams"
     },
     "checked_in": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     }
   }
 }

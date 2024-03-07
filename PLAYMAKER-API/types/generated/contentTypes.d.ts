@@ -1039,7 +1039,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
       'manyToMany',
       'api::player.player'
     >;
-    checked_in: Attribute.Boolean;
+    checked_in: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
