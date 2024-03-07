@@ -77,16 +77,12 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
 
   async manageCheckIn(d){
     if (d.check_in_policy !== "none") {
-      const matches = await strapi.entityService.findMany('api::match.match', {
-        filters: {
-          tournament: d.tournament.id
-        },
+      const tournament = await strapi.entityService.findOne('api::tournament.tournament', d.tournament.id, {
         populate: {
-          team_1: true,
-          team_2: true
+          teams: true
         }
       })
-      const teams = matches.map(m => [m.team_1, m.team_2]).flat().filter(t=>t)
+      const teams = tournament.teams
       const uncheckedTeams = teams.filter(t => !t.checked_in)
       if (uncheckedTeams.length > 0) {
         /*if (d.check_in_policy === "delay") {
