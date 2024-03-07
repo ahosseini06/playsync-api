@@ -46,6 +46,9 @@
         "delay"
       ],
       "default": "none"
+    },
+    "open_check_in": {
+      "type": "boolean"
     }
   }
 }

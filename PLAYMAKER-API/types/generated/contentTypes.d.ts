@@ -819,6 +819,7 @@ export interface ApiEventDateEventDate extends Schema.CollectionType {
     status_action: Attribute.Enumeration<['active', 'complete']>;
     check_in_policy: Attribute.Enumeration<['none', 'report', 'delay']> &
       Attribute.DefaultTo<'none'>;
+    open_check_in: Attribute.Boolean;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -13,6 +13,7 @@ module.exports = {
       }
     });
     dates.forEach(async (d) => {
+      await strapi.service('api::tournament.tournament').openCheckIn(d)
       await strapi.service('api::tournament.tournament').manageCheckIn(d)
       const updates = {}
       if (d.status_action) {

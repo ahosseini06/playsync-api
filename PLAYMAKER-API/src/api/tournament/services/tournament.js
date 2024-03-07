@@ -57,6 +57,24 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     })
   },
 
+  async openCheckIn(d) {
+    if (d.open_check_in) {
+      console.log("test")
+      const tournament = await strapi.entityService.findOne('api::tournament.tournament', d.tournament.id, {
+        populate: {
+          teams: true
+        }
+      })
+      tournament.teams.forEach(async t => {
+        await strapi.entityService.update('api::team.team', t.id, {
+          data: {
+            checked_in: false
+          }
+        })
+      })
+    }
+  },
+
   async manageCheckIn(d){
     if (d.check_in_policy !== "none") {
       const matches = await strapi.entityService.findMany('api::match.match', {
