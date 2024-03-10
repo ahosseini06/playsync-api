@@ -49,6 +49,12 @@
       "relation": "manyToOne",
       "target": "api::tournament.tournament",
       "inversedBy": "matches"
+    },
+    "day": {
+      "type": "date"
+    },
+    "time": {
+      "type": "time"
     }
   }
 }

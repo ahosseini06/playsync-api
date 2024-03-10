@@ -814,7 +814,14 @@ export interface ApiEventDateEventDate extends Schema.CollectionType {
       'api::tournament.tournament'
     >;
     stage_action: Attribute.Enumeration<
-      ['configuration', 'check-in', 'pool-play', 'play-offs', 'complete']
+      [
+        'configuration',
+        'check-in',
+        'pool-play',
+        'play-offs',
+        'buffer',
+        'complete'
+      ]
     >;
     status_action: Attribute.Enumeration<['active', 'complete']>;
     check_in_policy: Attribute.Enumeration<['none', 'report', 'delay']> &
@@ -870,6 +877,8 @@ export interface ApiMatchMatch extends Schema.CollectionType {
       'manyToOne',
       'api::tournament.tournament'
     >;
+    day: Attribute.Date;
+    time: Attribute.Time;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1167,6 +1176,8 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToMany',
       'api::team.team'
     >;
+    match_time_minutes: Attribute.Integer & Attribute.DefaultTo<1>;
+    break_time_minutes: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

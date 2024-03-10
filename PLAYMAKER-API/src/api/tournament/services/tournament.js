@@ -109,5 +109,35 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
         }
       }
     }
+  },
+
+  async setMatchTimes(tournamentID) {
+    const tournament = await strapi.entityService.findOne('api::tournament.tournament', tournamentID, {
+      populate: {
+        dates: true,
+        matches: true
+      }
+    })
+    const now = new Date()
+    const currentDate = [now.getFullYear(), (now.getMonth() + 1).toString().padStart(2, '0'), now.getDate().toString().padStart(2, '0')].join("-")
+    const matchesOnDay = tournament.matches.filter(m => m.day === currentDate)
+    /*const endEvent = await strapi.entityService.findMany('api::event-date.event-date', {
+      filters: {
+        tournament: tournamentID,
+        $or: [
+          { stage: "buffer" },
+          { stage: "complete" }
+        ]
+      },
+      sort: "datetime"
+    })
+    const endTime = endEvent[0].datetime*/
+    matchesOnDay.forEach(async (m, i) => {
+      await strapi.entityService.update('api::match.match', m.id, {
+        data: {
+          time: new Date(new Date().getTime() + tournament.match_time_minutes*(i+1)*60000)
+        }
+      })
+    })
   }
 }));

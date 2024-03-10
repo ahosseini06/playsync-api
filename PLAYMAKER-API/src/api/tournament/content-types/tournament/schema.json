@@ -101,6 +101,13 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::team.team"
+    },
+    "match_time_minutes": {
+      "type": "integer",
+      "default": 1
+    },
+    "break_time_minutes": {
+      "type": "integer"
     }
   }
 }

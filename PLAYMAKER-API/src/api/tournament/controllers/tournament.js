@@ -142,6 +142,7 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
           stage: 'pool-play'
         }
       })
+      await strapi.service('api::tournament.tournament').setMatchTimes(id)
     }
     return tournament
   }

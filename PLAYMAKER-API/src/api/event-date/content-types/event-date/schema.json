@@ -28,6 +28,7 @@
         "check-in",
         "pool-play",
         "play-offs",
+        "buffer",
         "complete"
       ]
     },
