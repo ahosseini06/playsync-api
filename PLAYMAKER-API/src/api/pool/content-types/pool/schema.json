@@ -18,7 +18,8 @@
     "matches": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::match.match"
+      "target": "api::match.match",
+      "mappedBy": "pool"
     },
     "teams": {
       "type": "relation",

@@ -46,7 +46,7 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       pools.push(table.map(row => row[i]).filter(t => t))
     })
     pools.forEach(async (p, i) => {
-      await strapi.entityService.create('api::pool.pool', {
+      const pool = await strapi.entityService.create('api::pool.pool', {
         data: {
           tournament: tournament.id,
           name: `Pool ${i + 1}`,
@@ -54,6 +54,7 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
           publishedAt: new Date()
         }
       })
+      await strapi.service('api::tournament.tournament').generateMatches(pool.id)
     })
   },
 
@@ -172,5 +173,40 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
         }
       })
     }
-  }
+  },
+
+  async generateMatches(poolID) {
+    const pool = await strapi.entityService.findOne('api::pool.pool', poolID, {
+      populate: {
+        tournament: true,
+        teams: true
+      }
+    })
+    const tournament = pool.tournament
+    const teams = pool.teams
+    const matches = []
+    const teamsInNumber = Array(teams.length * 2).fill([])
+    for (let i = 0; i < teams.length; i++) {
+      for (let j = i + 1; j < teams.length; j++) {
+        let number = 1
+        while (teamsInNumber[number].includes(teams[i].id) || teamsInNumber[number].includes(teams[j].id)) {
+          number++
+        }
+        matches.push({
+          tournament: tournament.id,
+          pool: pool.id,
+          team_1: teams[i].id,
+          team_2: teams[j].id,
+          number: number,
+          publishedAt: new Date()
+        })
+        teamsInNumber[number] = [...teamsInNumber[number], teams[i].id, teams[j].id]
+      }
+    }
+    matches.forEach(async m => {
+      await strapi.entityService.create('api::match.match', {
+        data: m
+      })
+    })
+  },
 }));

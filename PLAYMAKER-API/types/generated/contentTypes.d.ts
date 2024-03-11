@@ -880,6 +880,7 @@ export interface ApiMatchMatch extends Schema.CollectionType {
     day: Attribute.Date;
     time: Attribute.Time;
     complete: Attribute.Boolean & Attribute.DefaultTo<false>;
+    pool: Attribute.Relation<'api::match.match', 'manyToOne', 'api::pool.pool'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

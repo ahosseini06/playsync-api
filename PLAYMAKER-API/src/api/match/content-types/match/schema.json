@@ -59,6 +59,12 @@
     "complete": {
       "type": "boolean",
       "default": false
+    },
+    "pool": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::pool.pool",
+      "inversedBy": "matches"
     }
   }
 }
