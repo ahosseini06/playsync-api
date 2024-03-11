@@ -121,7 +121,14 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     })
     const now = new Date()
     const currentDate = [now.getFullYear(), (now.getMonth() + 1).toString().padStart(2, '0'), now.getDate().toString().padStart(2, '0')].join("-")
-    const matchesOnDay = tournament.matches.filter(m => m.day === currentDate)
+    const matchesOnDay = tournament.matches.filter(m => m.day === currentDate).sort((a, b) => a.number - b.number)
+    const firstMatchNumber = matchesOnDay[0].number
+    const matchTemplates = []
+    matchesOnDay.forEach(m => {
+      if (matchTemplates.filter(t=>t.number === m.number).length === 0) {
+        matchTemplates.push(m)
+      }
+    })
     const endEvents = await strapi.entityService.findMany('api::event-date.event-date', {
       filters: {
         tournament: tournamentID,
@@ -135,28 +142,32 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     const endTime = endEvents.filter(e => (new Date(e.datetime)).getDate() === now.getDate())[0].datetime
     const timeInBetween = (new Date(endTime).getTime() - now.getTime()) / 60000
     const matchesThatCanFit = Math.floor(timeInBetween / tournament.match_time_minutes)
-    matchesOnDay.slice(0, matchesThatCanFit).forEach(async (m, i) => {
-      await strapi.entityService.update('api::match.match', m.id, {
-        data: {
-          time: new Date(now.getTime() + tournament.match_time_minutes * i * 60000)
-        }
-      })
-    })
-    if (matchesOnDay.length > matchesThatCanFit) {
-      const tomorrow = new Date(now.getTime() + 86400000)
-      const tomorrowDay = [tomorrow.getFullYear(), (tomorrow.getMonth() + 1).toString().padStart(2, '0'), tomorrow.getDate().toString().padStart(2, '0')].join("-")
-      matchesOnDay.slice(matchesThatCanFit).forEach(async (m, i) => {
+    matchTemplates.slice(0, matchesThatCanFit).forEach(async (t, i) => {
+      matchesOnDay.filter(m => m.number === t.number).forEach(async (m) => {
         await strapi.entityService.update('api::match.match', m.id, {
           data: {
-            day: tomorrowDay
+            time: new Date(now.getTime() + i * tournament.match_time_minutes * 60000)
           }
+        })
+      })
+    })
+    if (matchTemplates.length > matchesThatCanFit) {
+      const tomorrow = new Date(now.getTime() + 86400000)
+      const tomorrowDay = [tomorrow.getFullYear(), (tomorrow.getMonth() + 1).toString().padStart(2, '0'), tomorrow.getDate().toString().padStart(2, '0')].join("-")
+      matchTemplates.slice(matchesThatCanFit).forEach(async (t, i) => {
+        matchesOnDay.filter(m => m.number === t.number).forEach(async (m) => {
+          await strapi.entityService.update('api::match.match', m.id, {
+            data: {
+              day: tomorrowDay
+            }
+          })
         })
       })
       await strapi.entityService.create('api::notification.notification', {
         data: {
           target_user: tournament.user.id,
           tournament: tournamentID,
-          message: `${matchesOnDay.length - matchesThatCanFit} matches have been moved to tomorrow due to time constraints`,
+          message: `${matchTemplates.length - matchesThatCanFit} matches have been moved to tomorrow due to time constraints`,
           publishedAt: new Date()
         }
       })
