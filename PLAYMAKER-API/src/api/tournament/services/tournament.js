@@ -121,7 +121,7 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     })
     const now = new Date()
     const currentDate = [now.getFullYear(), (now.getMonth() + 1).toString().padStart(2, '0'), now.getDate().toString().padStart(2, '0')].join("-")
-    const matchesOnDay = tournament.matches.filter(m => m.day === currentDate).sort((a, b) => a.number - b.number)
+    const matchesOnDay = tournament.matches.filter(m => !m.complete && m.day === currentDate).sort((a, b) => a.number - b.number)
     const firstMatchNumber = matchesOnDay[0].number
     const matchTemplates = []
     matchesOnDay.forEach(m => {
