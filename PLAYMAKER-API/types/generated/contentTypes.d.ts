@@ -879,6 +879,7 @@ export interface ApiMatchMatch extends Schema.CollectionType {
     >;
     day: Attribute.Date;
     time: Attribute.Time;
+    complete: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

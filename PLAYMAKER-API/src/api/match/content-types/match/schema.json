@@ -55,6 +55,10 @@
     },
     "time": {
       "type": "time"
+    },
+    "complete": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
