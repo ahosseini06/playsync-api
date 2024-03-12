@@ -29,7 +29,7 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       return { team: t.id, ranking: rankingObjs[0].current_rank }
     }))
     const sortedRankings = teamRankings.sort((a, b) => a.ranking - b.ranking).map(obj => obj.team)
-    const table = []
+    let table = []
     let currentRow = []
     sortedRankings.forEach((team, i) => {
       currentRow.push(team)
@@ -42,6 +42,13 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       table.push(currentRow)
     }
     const pools = []
+    table = table.map((row, i) => {
+      if(i % 2 === 1) {
+        return row.reverse()
+      }
+      return row
+    })
+    console.log(table)
     table[0].forEach((team, i) => {
       pools.push(table.map(row => row[i]).filter(t => t))
     })
