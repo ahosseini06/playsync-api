@@ -42,8 +42,11 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
         matches: true
       }
     });
-    const { name, pools, matches} = tournaments[0]
-    return { data: { name, pools, matches } }
+    if (tournaments[0]) {
+      const { name, pools, matches} = tournaments[0]
+      return { data: { name, pools, matches } }
+    }
+    return { data: null }
   },
 
   async getPrivate(ctx){
@@ -107,7 +110,8 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
         user: userID
       }
     });
-    return response
+    const newResponse = await strapi.entityService.findOne('api::tournament.tournament', response.data.id);
+    return newResponse
   },
 
   async update(ctx) {
