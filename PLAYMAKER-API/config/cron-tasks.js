@@ -28,6 +28,9 @@ module.exports = {
           case "pool-play":
             await strapi.service('api::notification.notification').sendStartConfirmation(d.tournament.id)
             return
+          case "play-offs":
+            await strapi.service('api::tournament.tournament').generateInitialBrackets(d.tournament)
+            break;
         }
       }
       strapi.entityService.update('api::tournament.tournament', d.tournament.id, {

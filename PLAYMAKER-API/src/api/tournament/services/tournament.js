@@ -65,9 +65,37 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     })
   },
 
+  async generateInitialBrackets(tournament) {
+    const pools = await strapi.entityService.findMany('api::pool.pool', {
+      filters: {
+        tournament: tournament.id
+      },
+      populate: {
+        teams: true
+      }
+    })
+    let totalTeams = []
+    pools.forEach(async p => {
+      const teams = p.teams
+      const sortedTeams = teams.sort((a, b) => b.wins_in_current_pool - a.wins_in_current_pool)
+      totalTeams = totalTeams.concat(sortedTeams)
+    })
+    console.log(totalTeams)
+    for (let i = 0; i < totalTeams.length / 2; i++) {
+      await strapi.entityService.create('api::match.match', {
+        data: {
+          tournament: tournament.id,
+          team_1: totalTeams[i].id,
+          team_2: totalTeams[totalTeams.length - 1 - i].id,
+          number: i + 1,
+          publishedAt: new Date()
+        }
+      })
+    }
+  },
+
   async openCheckIn(d) {
     if (d.open_check_in) {
-      console.log("test")
       const tournament = await strapi.entityService.findOne('api::tournament.tournament', d.tournament.id, {
         populate: {
           teams: true

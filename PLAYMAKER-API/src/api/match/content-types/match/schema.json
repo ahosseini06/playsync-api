@@ -65,6 +65,13 @@
       "relation": "manyToOne",
       "target": "api::pool.pool",
       "inversedBy": "matches"
+    },
+    "winner": {
+      "type": "enumeration",
+      "enum": [
+        "team_1",
+        "team_2"
+      ]
     }
   }
 }

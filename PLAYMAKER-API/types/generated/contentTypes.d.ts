@@ -881,6 +881,7 @@ export interface ApiMatchMatch extends Schema.CollectionType {
     time: Attribute.Time;
     complete: Attribute.Boolean & Attribute.DefaultTo<false>;
     pool: Attribute.Relation<'api::match.match', 'manyToOne', 'api::pool.pool'>;
+    winner: Attribute.Enumeration<['team_1', 'team_2']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1095,6 +1096,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
       'api::player.player'
     >;
     checked_in: Attribute.Boolean & Attribute.DefaultTo<false>;
+    wins_in_current_pool: Attribute.Integer;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

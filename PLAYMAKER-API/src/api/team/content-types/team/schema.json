@@ -42,6 +42,9 @@
     "checked_in": {
       "type": "boolean",
       "default": false
+    },
+    "wins_in_current_pool": {
+      "type": "integer"
     }
   }
 }
