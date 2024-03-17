@@ -882,6 +882,7 @@ export interface ApiMatchMatch extends Schema.CollectionType {
     complete: Attribute.Boolean & Attribute.DefaultTo<false>;
     pool: Attribute.Relation<'api::match.match', 'manyToOne', 'api::pool.pool'>;
     winner: Attribute.Enumeration<['team_1', 'team_2']>;
+    latest_bracket: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

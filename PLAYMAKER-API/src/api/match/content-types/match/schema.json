@@ -72,6 +72,10 @@
         "team_1",
         "team_2"
       ]
+    },
+    "latest_bracket": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
