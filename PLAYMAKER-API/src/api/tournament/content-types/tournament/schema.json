@@ -63,10 +63,12 @@
       "target": "api::bracket-type.bracket-type"
     },
     "pool_play": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "cross_over": {
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "stage": {
       "type": "enumeration",
