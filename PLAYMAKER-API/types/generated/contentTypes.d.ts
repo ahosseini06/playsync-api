@@ -665,7 +665,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::tournament.tournament'
     >;
     Name: Attribute.String;
-    Type: Attribute.Enumeration<['Admin', 'Player', 'Coach']>;
+    Type: Attribute.Enumeration<['Admin', 'Player', 'Coach']> &
+      Attribute.Required;
     coach: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -869,7 +870,8 @@ export interface ApiMatchMatch extends Schema.CollectionType {
       'manyToOne',
       'api::team.team'
     >;
-    status: Attribute.Enumeration<['scheduled', 'inProgress', 'finished']>;
+    status: Attribute.Enumeration<['scheduled', 'inProgress', 'finished']> &
+      Attribute.DefaultTo<'scheduled'>;
     score_1: Attribute.Integer;
     score_2: Attribute.Integer;
     tournament: Attribute.Relation<
@@ -1154,8 +1156,8 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToOne',
       'api::bracket-type.bracket-type'
     >;
-    pool_play: Attribute.Boolean;
-    cross_over: Attribute.Boolean;
+    pool_play: Attribute.Boolean & Attribute.DefaultTo<false>;
+    cross_over: Attribute.Boolean & Attribute.DefaultTo<false>;
     stage: Attribute.Enumeration<
       [
         'registering',

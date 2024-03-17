@@ -36,7 +36,8 @@
         "scheduled",
         "inProgress",
         "finished"
-      ]
+      ],
+      "default": "scheduled"
     },
     "score_1": {
       "type": "integer"

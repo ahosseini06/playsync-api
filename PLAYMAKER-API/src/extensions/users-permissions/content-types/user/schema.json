@@ -80,7 +80,8 @@
         "Admin",
         "Player",
         "Coach"
-      ]
+      ],
+      "required": true
     },
     "coach": {
       "type": "relation",
