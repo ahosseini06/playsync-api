@@ -12,7 +12,7 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
       return ctx.badRequest('Data is required');
     }
     //player creation
-    const players = await Promise.all(ctx.request.body.data.players.map(async p => 
+    const players = await Promise.all(ctx.request.body.data.players.map(async p =>
       await strapi.entityService.create('api::player.player', {
         data: p,
         publishedAt: new Date()
@@ -34,5 +34,45 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
       }
     });
     return response
+  },
+
+  async playerExists(ctx) {
+    const { name, jerseyNumber } = ctx.params;
+    //user retrieval
+    const authorizationHeader = ctx.headers.authorization;
+    if (!authorizationHeader) {
+      return ctx.badRequest('Authorization header is required');
+    }
+    const [scheme, token] = authorizationHeader.split(' ');
+    const user = jwt.jwtDecode(token).id;
+    const filters = {user}
+    if (name) {
+      filters.name = name
+    }
+    if (jerseyNumber) {
+      filters.jersey_number = jerseyNumber
+    }
+    const players = await strapi.entityService.findMany('api::player.player', { filters });
+    const data = players.length > 0 ? players : false;
+    return { data }
+  },
+
+  async coachExists(ctx) {
+    const { name } = ctx.params;
+    //user retrieval
+    const authorizationHeader = ctx.headers.authorization;
+    if (!authorizationHeader) {
+      return ctx.badRequest('Authorization header is required');
+    }
+    const [scheme, token] = authorizationHeader.split(' ');
+    const user = jwt.jwtDecode(token).id;
+    const coaches = await strapi.entityService.findMany('api::coach.coach', {
+      filters: {
+        name,
+        user
+      }
+    });
+    const data = coaches.length > 0 ? coaches : false;
+    return { data }
   }
 }));
