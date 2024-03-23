@@ -11,6 +11,12 @@ module.exports = {
       "path": "/coach-exists/:name",
       "handler": "team.coachExists",
       "config": { "policies": [] }
+    },
+    {
+      "method": "POST",
+      "path": "/register-team",
+      "handler": "team.registerTeam",
+      "config": { "policies": [] }
     }
   ]
 }

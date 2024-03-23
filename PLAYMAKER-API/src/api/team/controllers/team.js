@@ -5,6 +5,7 @@
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
+const jwt = require('jwt-decode');
 
 module.exports = createCoreController('api::team.team', ({ strapi }) => ({
   async create(ctx) {
@@ -74,5 +75,41 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
     });
     const data = coaches.length > 0 ? coaches : false;
     return { data }
+  },
+
+  async registerTeam(ctx) {
+    //user retrieval
+    const authorizationHeader = ctx.headers.authorization;
+    if (!authorizationHeader) {
+      return ctx.badRequest('Authorization header is required');
+    }
+    const [scheme, token] = authorizationHeader.split(' ');
+    const user = jwt.jwtDecode(token).id;
+    const { players, coaches } = ctx.request.body.data;
+    const reformatEntity = async (p, type) => {
+      if (typeof p === 'object') {
+        const obj = await strapi.entityService.create(`api::${type}.${type}`, {
+          data: {
+            ...p,
+            publishedAt: new Date(),
+            user
+          }
+        })
+        return obj.id
+      }
+      return p
+    }
+    const playerIDs = await Promise.all(players.map(p => reformatEntity(p, 'player')))
+    const coachIDs = await Promise.all(coaches.map(c => reformatEntity(c, 'coach')))
+    const response = await strapi.entityService.create('api::team.team', {
+      data: {
+        ...ctx.request.body.data,
+        players: playerIDs,
+        coaches: coachIDs,
+        publishedAt: new Date(),
+        user
+      }
+    })
+    return response
   }
 }));
