@@ -280,4 +280,40 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       })
     })
   },
+
+  async removeUnconfirmedTeams(tournamentID) {
+    const tournament = await strapi.entityService.findOne('api::tournament.tournament', tournamentID, {
+      populate: {
+        teams: true
+      }
+    })
+    console.log(tournament)
+    const teamIDs = tournament.teams.map(t => t.id)
+    console.log("teams: " + tournament.teams)
+    let newTeamIDs = await Promise.all(tournament.teams.map(async t => {
+      const populatedTeam = await strapi.entityService.findOne('api::team.team', t.id, {
+        populate: {
+          players: true
+        }
+      })
+      const confirmations = await strapi.entityService.findMany('api::confirmation.confirmation', {
+        filters: {
+          tournament: tournamentID,
+          team: t.id
+        }
+      })
+      console.log(t.name + " has " + confirmations.length + " confirmations")
+      if (confirmations.length === populatedTeam.players.length) {
+        return t.id
+      }
+      return null
+    }))
+    newTeamIDs = newTeamIDs.filter(t => t)
+    console.log(newTeamIDs)
+    await strapi.entityService.update('api::tournament.tournament', tournamentID, {
+      data: {
+        teams: newTeamIDs
+      }
+    })
+  }
 }));

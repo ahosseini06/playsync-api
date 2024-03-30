@@ -23,6 +23,7 @@ module.exports = {
         updates.stage = d.stage_action
         switch (updates.stage) {
           case "configuration":
+            await strapi.service('api::tournament.tournament').removeUnconfirmedTeams(d.tournament.id)
             await strapi.service('api::tournament.tournament').generatePools(d.tournament)
             break;
           case "pool-play":
