@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "confirmations",
+  "info": {
+    "singularName": "confirmation",
+    "pluralName": "confirmations",
+    "displayName": "Confirmation"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "player": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::player.player"
+    },
+    "team": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::team.team"
+    },
+    "tournament": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tournament.tournament"
+    }
+  }
+}

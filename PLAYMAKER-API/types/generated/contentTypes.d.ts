@@ -761,6 +761,50 @@ export interface ApiCoachCoach extends Schema.CollectionType {
   };
 }
 
+export interface ApiConfirmationConfirmation extends Schema.CollectionType {
+  collectionName: 'confirmations';
+  info: {
+    singularName: 'confirmation';
+    pluralName: 'confirmations';
+    displayName: 'Confirmation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    player: Attribute.Relation<
+      'api::confirmation.confirmation',
+      'oneToOne',
+      'api::player.player'
+    >;
+    team: Attribute.Relation<
+      'api::confirmation.confirmation',
+      'oneToOne',
+      'api::team.team'
+    >;
+    tournament: Attribute.Relation<
+      'api::confirmation.confirmation',
+      'oneToOne',
+      'api::tournament.tournament'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::confirmation.confirmation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::confirmation.confirmation',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiCourtCourt extends Schema.CollectionType {
   collectionName: 'courts';
   info: {
@@ -1332,6 +1376,7 @@ declare module '@strapi/types' {
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
       'api::bracket-type.bracket-type': ApiBracketTypeBracketType;
       'api::coach.coach': ApiCoachCoach;
+      'api::confirmation.confirmation': ApiConfirmationConfirmation;
       'api::court.court': ApiCourtCourt;
       'api::event-date.event-date': ApiEventDateEventDate;
       'api::match.match': ApiMatchMatch;
