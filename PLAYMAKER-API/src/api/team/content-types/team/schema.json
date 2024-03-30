@@ -45,6 +45,14 @@
     },
     "wins_in_current_pool": {
       "type": "integer"
+    },
+    "role_can_register": {
+      "type": "enumeration",
+      "enum": [
+        "player",
+        "coach"
+      ],
+      "default": "player"
     }
   }
 }

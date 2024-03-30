@@ -1131,6 +1131,8 @@ export interface ApiTeamTeam extends Schema.CollectionType {
     >;
     checked_in: Attribute.Boolean & Attribute.DefaultTo<false>;
     wins_in_current_pool: Attribute.Integer;
+    role_can_register: Attribute.Enumeration<['player', 'coach']> &
+      Attribute.DefaultTo<'player'>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

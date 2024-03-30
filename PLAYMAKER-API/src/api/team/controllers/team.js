@@ -6,6 +6,7 @@
 
 const { createCoreController } = require('@strapi/strapi').factories;
 const jwt = require('jwt-decode');
+const { renderToReadableStream } = require('react-dom/server');
 
 module.exports = createCoreController('api::team.team', ({ strapi }) => ({
   async create(ctx) {
@@ -113,7 +114,41 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
     return response
   },
 
-  /*async registerTeam(ctx) {
+  async registerTeam(ctx) {
+    //user retrieval
+    const authorizationHeader = ctx.headers.authorization;
+    if (!authorizationHeader) {
+      return ctx.badRequest('Authorization header is required');
+    }
+    const [scheme, token] = authorizationHeader.split(' ');
+    const user = jwt.jwtDecode(token).id;
 
-  }*/
+    const { teamID, tournamentID } = ctx.params
+    const tournament = await strapi.entityService.findOne('api::tournament.tournament', tournamentID, {
+      populate: {
+        ok_shapes: true,
+        teams: true
+      }
+    })
+    const shapeMatches = await Promise.all(tournament.ok_shapes.map(async s => {
+      const match = await strapi.service('api::team.team').checkShape(teamID, s)
+      return match
+    }))
+    console.log(shapeMatches)
+    const teamIDs = tournament.teams.map(t=>t.id)
+
+    if (shapeMatches.length > 0 && !(shapeMatches.reduce((a, b) => (a || b)))) {
+      return ctx.badRequest("Team is not valid for this type of tournament.")
+    }
+    const canRegister = await strapi.service('api::team.team').checkRegisterPerms(user, teamID)
+    if (!canRegister) {
+      return ctx.badRequest("You are not permitted to sign up for tournaments with this team. Please contact a coach for further assistance.")
+    }
+    const updated = await strapi.entityService.update('api::tournament.tournament', tournamentID, {
+      data: {
+        teams: [...teamIDs, teamID]
+      }
+    })
+    return updated
+  }
 }));
