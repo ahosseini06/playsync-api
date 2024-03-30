@@ -111,5 +111,9 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
       }
     })
     return response
-  }
+  },
+
+  /*async registerTeam(ctx) {
+
+  }*/
 }));

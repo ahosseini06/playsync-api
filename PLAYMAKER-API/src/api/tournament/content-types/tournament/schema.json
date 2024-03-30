@@ -110,6 +110,11 @@
     },
     "break_time_minutes": {
       "type": "integer"
+    },
+    "ok_shapes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::shape.shape"
     }
   }
 }

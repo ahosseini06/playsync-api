@@ -1065,6 +1065,37 @@ export interface ApiRankingRanking extends Schema.CollectionType {
   };
 }
 
+export interface ApiShapeShape extends Schema.CollectionType {
+  collectionName: 'shapes';
+  info: {
+    singularName: 'shape';
+    pluralName: 'shapes';
+    displayName: 'Shape';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    num_players: Attribute.Integer;
+    coaches_allowed: Attribute.Boolean;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::shape.shape',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::shape.shape',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiTeamTeam extends Schema.CollectionType {
   collectionName: 'teams';
   info: {
@@ -1185,6 +1216,11 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
     >;
     match_time_minutes: Attribute.Integer & Attribute.DefaultTo<1>;
     break_time_minutes: Attribute.Integer;
+    ok_shapes: Attribute.Relation<
+      'api::tournament.tournament',
+      'oneToMany',
+      'api::shape.shape'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1301,6 +1337,7 @@ declare module '@strapi/types' {
       'api::player.player': ApiPlayerPlayer;
       'api::pool.pool': ApiPoolPool;
       'api::ranking.ranking': ApiRankingRanking;
+      'api::shape.shape': ApiShapeShape;
       'api::team.team': ApiTeamTeam;
       'api::tournament.tournament': ApiTournamentTournament;
       'api::user-info-resolver.user-info-resolver': ApiUserInfoResolverUserInfoResolver;
