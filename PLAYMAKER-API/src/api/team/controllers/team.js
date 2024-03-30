@@ -77,7 +77,7 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
     return { data }
   },
 
-  async registerTeam(ctx) {
+  async createTeam(ctx) {
     //user retrieval
     const authorizationHeader = ctx.headers.authorization;
     if (!authorizationHeader) {

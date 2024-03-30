@@ -14,8 +14,8 @@ module.exports = {
     },
     {
       "method": "POST",
-      "path": "/register-team",
-      "handler": "team.registerTeam",
+      "path": "/create-team",
+      "handler": "team.createTeam",
       "config": { "policies": [] }
     }
   ]
