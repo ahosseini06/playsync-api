@@ -77,6 +77,16 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
       });
       return eventDate.id
     })) : [];
+    //shape creation
+    const shapes = ctx.request.body.data.dates ? await Promise.all(ctx.request.body.data.dates.map(async (s) => {
+      const shape = await strapi.entityService.create('api::event-date.event-date', {
+        data: {
+          ...s,
+          publishedAt: new Date(),
+        }
+      });
+      return shape.id
+    })) : [];
     //private id creation
     const privateID = Math.floor(1000000000 + Math.random() * 9000000000);
     let matches = [0]
