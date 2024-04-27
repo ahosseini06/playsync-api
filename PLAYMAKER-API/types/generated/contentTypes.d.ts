@@ -664,9 +664,8 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::tournament.tournament'
     >;
-    Name: Attribute.String;
-    Type: Attribute.Enumeration<['Admin', 'Player', 'Coach']> &
-      Attribute.Required;
+    name: Attribute.String;
+    type: Attribute.Enumeration<['Admin', 'Player', 'Coach']>;
     coach: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',

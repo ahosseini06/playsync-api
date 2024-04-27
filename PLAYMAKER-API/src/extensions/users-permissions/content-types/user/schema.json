@@ -71,17 +71,17 @@
       "target": "api::tournament.tournament",
       "mappedBy": "user"
     },
-    "Name": {
+    "name": {
       "type": "string"
     },
-    "Type": {
+    "type": {
       "type": "enumeration",
       "enum": [
         "Admin",
         "Player",
         "Coach"
       ],
-      "required": true
+      "required": false
     },
     "coach": {
       "type": "relation",
