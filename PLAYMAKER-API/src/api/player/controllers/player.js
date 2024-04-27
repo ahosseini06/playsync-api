@@ -34,6 +34,7 @@ module.exports = createCoreController('api::player.player', ({ strapi }) => ({
     const user = await strapi.db.query('plugin::users-permissions.user').create({
       data: {
         ...ctx.request.body,
+        confirmed: true,
         players: [playerID],
         coach: coachID
       }
