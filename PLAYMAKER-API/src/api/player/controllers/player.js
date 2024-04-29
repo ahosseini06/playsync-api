@@ -5,40 +5,33 @@
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
+const axios = require('axios');
 
 module.exports = createCoreController('api::player.player', ({ strapi }) => ({
   async createUser(ctx) {
-    let playerID;
-    let coachID;
-    console.log(ctx.request.body.type)
-    switch (ctx.request.body.type) {
-      case 'Player':
-        const player = await strapi.entityService.create('api::player.player', {
+    try {
+      const user = await axios.post('http://localhost:1337/api/auth/local/register', ctx.request.body)
+      if (ctx.request.body.type) {
+        const type = ctx.request.body.type.toLowerCase()
+        const entity = await strapi.entityService.create(`api::${type}.${type}`, {
           data: {
             ...ctx.request.body,
-            publishedAt: new Date()
+            publishedAt: new Date(),
+            user: user.data.user.id
           }
         })
-        playerID = player.id
-        break;
-      case 'Coach':
-        const coach = await strapi.entityService.create('api::coach.coach', {
-          data: {
-            ...ctx.request.body,
-            publishedAt: new Date()
-          }
-        })
-        coachID = coach.id
-        break;
-    }
-    const user = await strapi.db.query('plugin::users-permissions.user').create({
-      data: {
-        ...ctx.request.body,
-        confirmed: true,
-        players: [playerID],
-        coach: coachID
       }
-    })
-    return user
+      return user.data
+    } catch (e) {
+      const { status, name, message } = e
+      return {
+        data: null,
+        error: {
+          status,
+          name,
+          message
+        }
+      }
+    }
   }
 }));
