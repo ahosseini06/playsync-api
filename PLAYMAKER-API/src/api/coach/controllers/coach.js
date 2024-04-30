@@ -24,4 +24,4 @@ module.exports = createCoreController('api::coach.coach', (({ strapi }) => ({
     });
     return newResponse
   }
-}));
+})));
