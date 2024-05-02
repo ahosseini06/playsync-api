@@ -15,7 +15,7 @@ module.exports = createCoreService('api::notification.notification', ({ strapi }
     });
     await strapi.entityService.create('api::notification.notification', {
       data: {
-        target_user: tournament.user.id,
+        target_user: tournament.user ? tournament.user.id : null,
         tournament: tournamentID,
         message: 'Your tournament is ready to start',
         action: 'start-tournament',
