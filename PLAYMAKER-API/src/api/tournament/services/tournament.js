@@ -184,6 +184,7 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
             data: {
               target_user: tournament.user.id,
               tournament: d.tournament.id,
+              action: 'none'
               message: `The following teams have not checked in: ${uncheckedTeams.map(p => p.name).join(", ")}`,
               publishedAt: new Date()
             }
@@ -249,6 +250,7 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
         data: {
           target_user: tournament.user.id,
           tournament: tournamentID,
+          action: 'none',
           message: `${matchTemplates.length - matchesThatCanFit} matches have been moved to tomorrow due to time constraints`,
           publishedAt: new Date()
         }
