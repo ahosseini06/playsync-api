@@ -77,9 +77,9 @@
     "type": {
       "type": "enumeration",
       "enum": [
-        "Admin",
-        "Player",
-        "Coach"
+        "admin",
+        "player",
+        "coach"
       ],
       "required": false
     },

@@ -115,6 +115,14 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::shape.shape"
+    },
+    "players_per_team": {
+      "type": "integer",
+      "default": 6
+    },
+    "players_on_court": {
+      "type": "integer",
+      "default": 6
     }
   }
 }

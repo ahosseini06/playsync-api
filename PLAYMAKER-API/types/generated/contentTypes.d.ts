@@ -665,7 +665,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'api::tournament.tournament'
     >;
     name: Attribute.String;
-    type: Attribute.Enumeration<['Admin', 'Player', 'Coach']>;
+    type: Attribute.Enumeration<['admin', 'player', 'coach']>;
     coach: Attribute.Relation<
       'plugin::users-permissions.user',
       'oneToOne',
@@ -1266,6 +1266,8 @@ export interface ApiTournamentTournament extends Schema.CollectionType {
       'oneToMany',
       'api::shape.shape'
     >;
+    players_per_team: Attribute.Integer & Attribute.DefaultTo<6>;
+    players_on_court: Attribute.Integer & Attribute.DefaultTo<6>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
