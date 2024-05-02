@@ -68,7 +68,7 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
       return ctx.badRequest('Data is required');
     }
     //date creation
-    const dates = ctx.request.body.data.dates ? await Promise.all(ctx.request.body.data.dates.map(async (date) => {
+    const dates = ctx.request.body.data.dates && Array.isArray(ctx.request.body.data.dates) ? await Promise.all(ctx.request.body.data.dates.map(async (date) => {
       const eventDate = await strapi.entityService.create('api::event-date.event-date', {
         data: {
           ...date,
@@ -78,8 +78,8 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
       return eventDate.id
     })) : [];
     //shape creation
-    const shapes = ctx.request.body.data.dates ? await Promise.all(ctx.request.body.data.dates.map(async (s) => {
-      const shape = await strapi.entityService.create('api::event-date.event-date', {
+    const shapes = ctx.request.body.data.shapes && Array.isArray(ctx.request.body.data.shapes) ? await Promise.all(ctx.request.body.data.shapes.map(async (s) => {
+      const shape = await strapi.entityService.create('api::shape.shape', {
         data: {
           ...s,
           publishedAt: new Date(),
@@ -115,6 +115,7 @@ module.exports = createCoreController('api::tournament.tournament', ({ strapi })
     await strapi.entityService.update('api::tournament.tournament', response.data.id, {
       data: {
         event_dates: dates,
+        ok_shapes: shapes,
         private_id: privateID.toString(),
         public_id: publicID,
         user: userID

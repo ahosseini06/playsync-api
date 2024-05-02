@@ -1176,6 +1176,7 @@ export interface ApiTeamTeam extends Schema.CollectionType {
     wins_in_current_pool: Attribute.Integer;
     role_can_register: Attribute.Enumeration<['player', 'coach']> &
       Attribute.DefaultTo<'player'>;
+    current_seed: Attribute.Integer & Attribute.Private;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

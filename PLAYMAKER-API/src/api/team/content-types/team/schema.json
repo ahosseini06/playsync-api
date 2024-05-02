@@ -53,6 +53,10 @@
         "coach"
       ],
       "default": "player"
+    },
+    "current_seed": {
+      "type": "integer",
+      "private": true
     }
   }
 }
