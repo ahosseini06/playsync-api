@@ -92,6 +92,16 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
           latest_bracket: true
         }
       })
+      await strapi.entityService.update('api::team.team', totalTeams[i].id, {
+        data: {
+          current_seed: i + 1
+        }
+      })
+      await strapi.entityService.update('api::team.team', totalTeams[totalTeams.length - 1 - i].id, {
+        data: {
+          current_seed: totalTeams.length - i
+        }
+      })
     }
   },
 
@@ -115,14 +125,14 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
         }
       })
     })
-    const totalTeams = matches.map(m => m[m.winner]).filter(t => t)
-    for (let i = 0; i < totalTeams.length; i += 2) {
+    const totalTeams = matches.map(m => m[m.winner]).filter(t => t).sort((a, b) => a.current_seed - b.current_seed)
+    for (let i = 0; i < totalTeams.length/2; i++) {
       await strapi.entityService.create('api::match.match', {
         data: {
           tournament: tournament.id,
           team_1: totalTeams[i].id,
-          team_2: totalTeams[i + 1].id,
-          number: i / 2 + 1,
+          team_2: totalTeams[totalTeams.length - i - 1].id,
+          number: i + 1,
           publishedAt: new Date(),
           latest_bracket: true
         }
