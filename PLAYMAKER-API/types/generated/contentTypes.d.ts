@@ -666,9 +666,9 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     name: Attribute.String;
     type: Attribute.Enumeration<['admin', 'player', 'coach']>;
-    coach: Attribute.Relation<
+    coaches: Attribute.Relation<
       'plugin::users-permissions.user',
-      'oneToOne',
+      'oneToMany',
       'api::coach.coach'
     >;
     players: Attribute.Relation<
@@ -739,7 +739,7 @@ export interface ApiCoachCoach extends Schema.CollectionType {
     team: Attribute.Relation<'api::coach.coach', 'manyToOne', 'api::team.team'>;
     user: Attribute.Relation<
       'api::coach.coach',
-      'oneToOne',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
