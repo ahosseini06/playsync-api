@@ -1003,9 +1003,9 @@ export interface ApiPlayerPlayer extends Schema.CollectionType {
   attributes: {
     name: Attribute.String;
     jersey_number: Attribute.Integer;
-    teams: Attribute.Relation<
+    team: Attribute.Relation<
       'api::player.player',
-      'manyToMany',
+      'manyToOne',
       'api::team.team'
     >;
     user: Attribute.Relation<
@@ -1167,16 +1167,16 @@ export interface ApiTeamTeam extends Schema.CollectionType {
       'oneToMany',
       'api::ranking.ranking'
     >;
-    players: Attribute.Relation<
-      'api::team.team',
-      'manyToMany',
-      'api::player.player'
-    >;
     checked_in: Attribute.Boolean & Attribute.DefaultTo<false>;
     wins_in_current_pool: Attribute.Integer;
     role_can_register: Attribute.Enumeration<['player', 'coach']> &
       Attribute.DefaultTo<'player'>;
     current_seed: Attribute.Integer & Attribute.Private;
+    players: Attribute.Relation<
+      'api::team.team',
+      'oneToMany',
+      'api::player.player'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

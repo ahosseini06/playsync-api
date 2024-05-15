@@ -33,12 +33,6 @@
       "target": "api::ranking.ranking",
       "mappedBy": "team"
     },
-    "players": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::player.player",
-      "mappedBy": "teams"
-    },
     "checked_in": {
       "type": "boolean",
       "default": false
@@ -57,6 +51,12 @@
     "current_seed": {
       "type": "integer",
       "private": true
+    },
+    "players": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::player.player",
+      "mappedBy": "team"
     }
   }
 }

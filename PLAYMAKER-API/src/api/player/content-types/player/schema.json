@@ -18,9 +18,9 @@
     "jersey_number": {
       "type": "integer"
     },
-    "teams": {
+    "team": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "manyToOne",
       "target": "api::team.team",
       "inversedBy": "players"
     },
