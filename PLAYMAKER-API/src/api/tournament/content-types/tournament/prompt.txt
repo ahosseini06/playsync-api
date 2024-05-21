@@ -1,0 +1,89 @@
+"attributes": {
+    "name": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "scheduled",
+        "active",
+        "complete"
+      ],
+      "default": "scheduled"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "tournaments"
+    },
+    "num_tiers": {
+      "type": "integer"
+    },
+    "venues": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::venue.venue",
+      "mappedBy": "tournament"
+    },
+    "bracket_type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::bracket-type.bracket-type"
+    },
+    "pool_play": {
+      "type": "boolean",
+      "default": false
+    },
+    "cross_over": {
+      "type": "boolean",
+      "default": false
+    },
+    "stage": {
+      "type": "enumeration",
+      "enum": [
+        "registering",
+        "configuration",
+        "check-in",
+        "buffer",
+        "pool-play",
+        "play-offs",
+        "complete"
+      ],
+      "default": "registering"
+    },
+    "event_dates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::event-date.event-date",
+      "mappedBy": "tournament"
+    },
+    "public_id": {
+      "type": "uid",
+      "targetField": "name"
+    },
+    "private_id": {
+      "type": "string"
+    },
+    "pool_size": {
+      "type": "integer"
+    },
+    "teams": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::team.team"
+    },
+    "match_time_minutes": {
+      "type": "integer",
+      "default": 1
+    },
+    "break_time_minutes": {
+      "type": "integer"
+    },
+    "ok_shapes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::shape.shape"
+    }
+  } 
+}

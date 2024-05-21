@@ -86,27 +86,32 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
     }
     const [scheme, token] = authorizationHeader.split(' ');
     const user = jwt.jwtDecode(token).id;
-    const { players, coaches } = ctx.request.body.data;
+    const { players, coaches } = ctx.request.body;
     const reformatEntity = async (p, type) => {
       if (typeof p === 'object') {
-        const obj = await strapi.entityService.create(`api::${type}.${type}`, {
-          data: {
-            ...p,
-            publishedAt: new Date(),
-            user
-          }
-        })
-        return obj.id
+        if (p.id) {
+          const obj = await strapi.entityService.create(`api::${type}.${type}`, {
+            data: {
+              ...p,
+              user: p.id,
+              publishedAt: new Date(),
+              id: undefined
+            }
+          })
+          return obj.id
+        }
+        console.log("inviting " + p.email)
+        return null
       }
       return p
     }
-    const playerIDs = await Promise.all(players.map(p => reformatEntity(p, 'player')))
-    const coachIDs = await Promise.all(coaches.map(c => reformatEntity(c, 'coach')))
+    let playerIDs = players ? await Promise.all(players.map(p => reformatEntity(p, 'player'))) : []
+    let coachIDs = coaches ? await Promise.all(coaches.map(c => reformatEntity(c, 'coach'))) : []
     const response = await strapi.entityService.create('api::team.team', {
       data: {
-        ...ctx.request.body.data,
-        players: playerIDs,
-        coaches: coachIDs,
+        ...ctx.request.body,
+        players: playerIDs.filter(p => p),
+        coaches: coachIDs.filter(c => c),
         publishedAt: new Date(),
         user
       }
