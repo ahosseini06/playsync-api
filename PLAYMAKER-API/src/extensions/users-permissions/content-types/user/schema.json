@@ -94,6 +94,10 @@
       "relation": "oneToMany",
       "target": "api::player.player",
       "mappedBy": "user"
+    },
+    "invited_unconfirmed": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

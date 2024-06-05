@@ -87,6 +87,7 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
     const [scheme, token] = authorizationHeader.split(' ');
     const user = jwt.jwtDecode(token).id;
     const { players, coaches } = ctx.request.body;
+    const pendingEmails = []
     const reformatEntity = async (p, type) => {
       if (typeof p === 'object') {
         if (p.id) {
@@ -100,7 +101,10 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
           })
           return obj.id
         }
-        console.log("inviting " + p.email)
+        pendingEmails.push({
+          email: p.email,
+          userData: { ...p, type }
+        })
         return null
       }
       return p
@@ -115,6 +119,9 @@ module.exports = createCoreController('api::team.team', ({ strapi }) => ({
         publishedAt: new Date(),
         user
       }
+    })
+    pendingEmails.forEach(async data => {
+      await strapi.service('api::team.team').inviteUser(data.email, data.userData, response.id)
     })
     return response
   },
