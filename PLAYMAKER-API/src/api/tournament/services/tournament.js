@@ -12,12 +12,18 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       populate: {
         teams: true,
         pools: true,
-        venues: true
+        venues: true,
+        matches: true
       }
     })
     if (populatedTournament.pools && populatedTournament.pools.length > 0) {
       populatedTournament.pools.forEach(async p => {
         await strapi.entityService.delete('api::pool.pool', p.id)
+      })
+    }
+    if (populatedTournament.matches && populatedTournament.matches.length > 0) {
+      populatedTournament.matches.forEach(async m => {
+        await strapi.entityService.delete('api::match.match', m.id)
       })
     }
     const teamRankings = await Promise.all(populatedTournament.teams.map(async t => {
