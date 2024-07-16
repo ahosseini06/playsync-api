@@ -4,7 +4,8 @@
   "info": {
     "singularName": "court",
     "pluralName": "courts",
-    "displayName": "court"
+    "displayName": "court",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -19,6 +20,11 @@
       "relation": "manyToOne",
       "target": "api::venue.venue",
       "inversedBy": "courts"
+    },
+    "adjacent_courts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::court.court"
     }
   }
 }

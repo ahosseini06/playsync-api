@@ -811,6 +811,7 @@ export interface ApiCourtCourt extends Schema.CollectionType {
     singularName: 'court';
     pluralName: 'courts';
     displayName: 'court';
+    description: '';
   };
   options: {
     draftAndPublish: true;
@@ -821,6 +822,11 @@ export interface ApiCourtCourt extends Schema.CollectionType {
       'api::court.court',
       'manyToOne',
       'api::venue.venue'
+    >;
+    adjacent_courts: Attribute.Relation<
+      'api::court.court',
+      'oneToMany',
+      'api::court.court'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
