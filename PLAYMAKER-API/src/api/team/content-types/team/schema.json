@@ -21,12 +21,6 @@
       "target": "api::coach.coach",
       "mappedBy": "team"
     },
-    "matches": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::match.match",
-      "mappedBy": "team_2"
-    },
     "rankings": {
       "type": "relation",
       "relation": "oneToMany",

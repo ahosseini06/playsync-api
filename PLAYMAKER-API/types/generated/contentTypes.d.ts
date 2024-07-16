@@ -912,12 +912,12 @@ export interface ApiMatchMatch extends Schema.CollectionType {
     type: Attribute.Integer;
     team_1: Attribute.Relation<
       'api::match.match',
-      'manyToOne',
+      'oneToOne',
       'api::team.team'
     >;
     team_2: Attribute.Relation<
       'api::match.match',
-      'manyToOne',
+      'oneToOne',
       'api::team.team'
     >;
     status: Attribute.Enumeration<['scheduled', 'inProgress', 'finished']> &
@@ -1168,11 +1168,6 @@ export interface ApiTeamTeam extends Schema.CollectionType {
       'api::team.team',
       'oneToMany',
       'api::coach.coach'
-    >;
-    matches: Attribute.Relation<
-      'api::team.team',
-      'oneToMany',
-      'api::match.match'
     >;
     rankings: Attribute.Relation<
       'api::team.team',

@@ -20,15 +20,13 @@
     },
     "team_1": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::team.team",
-      "inversedBy": "matches"
+      "relation": "oneToOne",
+      "target": "api::team.team"
     },
     "team_2": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::team.team",
-      "inversedBy": "matches"
+      "relation": "oneToOne",
+      "target": "api::team.team"
     },
     "status": {
       "type": "enumeration",
