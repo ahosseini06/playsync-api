@@ -11,7 +11,8 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
     const populatedTournament = await strapi.entityService.findOne('api::tournament.tournament', tournament.id, {
       populate: {
         teams: true,
-        pools: true
+        pools: true,
+        venues: true
       }
     })
     if (populatedTournament.pools && populatedTournament.pools.length > 0) {
@@ -48,11 +49,10 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       }
       return row
     })
-    console.log(table)
     table[0].forEach((team, i) => {
       pools.push(table.map(row => row[i]).filter(t => t))
     })
-    pools.forEach(async (p, i) => {
+    const allMatches = await Promise.all(await pools.map(async (p, i) => {
       const pool = await strapi.entityService.create('api::pool.pool', {
         data: {
           tournament: tournament.id,
@@ -61,8 +61,28 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
           publishedAt: new Date()
         }
       })
-      await strapi.service('api::tournament.tournament').generateMatches(pool.id)
+      const matches = await Promise.all(await strapi.service('api::tournament.tournament').generateMatches(pool.id))
+      return matches
+    }))
+    let formattedMatches = []
+    allMatches.forEach(p => p.forEach(({id, number, team_1, team_2}) => {
+      formattedMatches.push({
+        id: id,
+        number: number,
+        team_1: team_1.id,
+        team_2: team_2.id
+      })
+    }))
+    let courts = await strapi.entityService.findMany('api::court.court', {
+      filters: {
+        venue: populatedTournament.venues[0].id
+      },
+      populate: {
+        adjacent_courts: true
+      }
     })
+    courts = courts.map(({ id, number, adjacent_courts }) => ({ id: id, number: number, adjacent_courts: adjacent_courts.map(c => c.id) }))
+    await strapi.service('api::match.match').assignMatchesToCourts(populatedTournament.teams, formattedMatches, courts)
   },
 
   async generateInitialBrackets(tournament) {
@@ -80,7 +100,6 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
       const sortedTeams = teams.sort((a, b) => b.wins_in_current_pool - a.wins_in_current_pool)
       totalTeams = totalTeams.concat(sortedTeams)
     })
-    console.log(totalTeams)
     for (let i = 0; i < totalTeams.length / 2; i++) {
       await strapi.entityService.create('api::match.match', {
         data: {
@@ -286,20 +305,24 @@ module.exports = createCoreService('api::tournament.tournament', ({ strapi }) =>
         teamsInNumber[number] = [...teamsInNumber[number], teams[i].id, teams[j].id]
       }
     }
-    matches.forEach(async m => {
+    return matches.map(async m => 
       await strapi.entityService.create('api::match.match', {
-        data: m
+        data: m,
+        populate: {
+          team_1: true,
+          team_2: true
+        }
       })
-    })
+    )
   },
 
   async removeUnconfirmedTeams(tournamentID) {
+    console.log("removing unconfirmed teams")
     const tournament = await strapi.entityService.findOne('api::tournament.tournament', tournamentID, {
       populate: {
         teams: true
       }
     })
-    console.log(tournament)
     const teamIDs = tournament.teams.map(t => t.id)
     console.log("teams: " + tournament.teams)
     let newTeamIDs = await Promise.all(tournament.teams.map(async t => {

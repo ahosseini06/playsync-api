@@ -77,6 +77,11 @@
     "latest_bracket": {
       "type": "boolean",
       "default": false
+    },
+    "court": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::court.court"
     }
   }
 }

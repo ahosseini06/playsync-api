@@ -5,9 +5,9 @@ module.exports = {
     currentDate.setSeconds(0);
     currentDate.setMilliseconds(0);
     const dates = await strapi.entityService.findMany('api::event-date.event-date', {
-      filters: {
+      /*filters: {
         datetime: currentDate
-      },
+      },*/
       populate: {
         tournament: true
       }
