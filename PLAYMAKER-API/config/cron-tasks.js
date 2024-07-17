@@ -1,7 +1,8 @@
 module.exports = {
   //activate tournaments on start date:
   '*/1 * * * *': async ({ strapi }) => {
-    const currentDate = new Date();
+    const timezoneAdjust = process.env.TIMEZONE_ADJUST ? process.env.TIMEZONE_ADJUST : 0 
+    const currentDate = new Date(Date.now() + timezoneAdjust * (60 * 60 * 1000) )
     currentDate.setSeconds(0);
     currentDate.setMilliseconds(0);
     const dates = await strapi.entityService.findMany('api::event-date.event-date', {
